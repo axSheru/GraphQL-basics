@@ -6,52 +6,44 @@ import { GraphQLServer } from 'graphql-yoga';
 // The ! is to indicate it will allways be the return type value.
 const typeDefs = `
     type Query {
+        me: User!
+        post: Post!
+    },
+
+    type User {
         id: ID!
         name: String!
-        age: Int!
-        employed: Boolean!
-        gpa: Float
+        email: String!
+        age: Int
+    },
+
+    type Post {
+        id: ID!
         title: String!
-        price: Float!
-        releaseYear: Int
-        rating: Float
-        inStock: Boolean
-    }
+        body: String!
+        published: Boolean!
+    },
 `;
 
 
 // Resolvers. The querys.
 const resolvers = {
     Query: {
-        id() {
-            return 'ab543ds';
+        me() {
+            return {
+                id: 'm9803j',
+                name: 'Mariana',
+                email: 'majipe93@test.com',
+                age: 28,
+            };
         },
-        name() {
-            return 'Mariana';
-        },
-        age() {
-            return 28;
-        },
-        employed() {
-            return true;
-        },
-        gpa() {
-            return 2.8;
-        },
-        title() {
-            return 'BS Luke Skywalker.';
-        },
-        price() {
-            return 16.99;
-        },
-        releaseYear() {
-            return 2012;
-        },
-        rating() {
-            return 4.8;
-        },
-        inStock() {
-            return true;
+        post() {
+            return {
+                id: 'jfpo8780s',
+                title: 'Young man learns GraphQL',
+                body: 'Is amazing! He says about this technology',
+                published: true,
+            }
         },
     }
 };

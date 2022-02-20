@@ -2,6 +2,50 @@ import { GraphQLServer } from 'graphql-yoga';
 
 // Scalar types: String, Boolean, Int, Float, ID.
 
+// Demo user data.
+const users = [
+    {
+        id: '1',
+        name: 'Alex',
+        email: 'alex@test.com',
+        age: 26
+    },
+    {
+        id: '2',
+        name: 'Andy',
+        email: 'andy@test.com',
+        age: 24
+    },
+    {
+        id: '3',
+        name: 'Laura',
+        email: 'lau@test.com',
+        age: 55
+    },
+];
+
+// Demo posts data.
+const posts = [
+    {
+        id: '1',
+        title: 'Star Wars is back!',
+        body: 'A new TV show will premiere soon.',
+        published: true,
+    },
+    {
+        id: '2',
+        title: 'Grogu is Yodas child?',
+        body: 'They are the same color.',
+        published: false,
+    },
+    {
+        id: '3',
+        title: 'BS vs TVC',
+        body: 'They both are amazing!',
+        published: true,
+    },
+];
+
 // Type definition (Schema).
 // The ! is to indicate it will allways be the return type value.
 const typeDefs = `
@@ -10,6 +54,8 @@ const typeDefs = `
         add( a: Float!, b: Float! ): Float!
         add2( numbers: [Float!]! ): Float!
         grades: [Int!]!
+        users(query: String): [User!]!
+        posts(query: String): [Post!]!
         me: User!
         post: Post!
     },
@@ -48,8 +94,22 @@ const resolvers = {
                 return 0;
             }
         },
-        grades( parent, args, ctx, info) {
+        grades( parent, args, ctx, info ) {
             return [ 89, 78, 99 ];
+        },
+        users( parent, args, ctx, info ) {
+            return ( ! args.query )
+                ? users
+                : users.filter( ( user ) => {
+                    return user.name.toLowerCase().includes( args.query.toLowerCase() );
+                });
+        },
+        posts( parent, args, ctx, info ) {
+            return ( ! args.query )
+                ? posts
+                : posts.filter( ( post ) => {
+                    return ( post.title.toLowerCase().includes( args.query.toLowerCase() )  || post.body.toLowerCase().includes( args.query.toLowerCase() ) );
+                });
         },
         me() {
             return {

@@ -31,18 +31,21 @@ const posts = [
         title: 'Star Wars is back!',
         body: 'A new TV show will premiere soon.',
         published: true,
+        author: '2',
     },
     {
         id: '2',
         title: 'Grogu is Yodas child?',
         body: 'They are the same color.',
         published: false,
+        author: '3',
     },
     {
         id: '3',
         title: 'BS vs TVC',
         body: 'They both are amazing!',
         published: true,
+        author: '1',
     },
 ];
 
@@ -72,6 +75,7 @@ const typeDefs = `
         title: String!
         body: String!
         published: Boolean!
+        author: User!
     },
 `;
 
@@ -126,6 +130,13 @@ const resolvers = {
                 body: 'Is amazing! He says about this technology',
                 published: true,
             }
+        },
+    },
+    Post: {
+        author( parent, args, ctx, info ) {
+            return users.find( ( user ) => {
+                return user.id == parent.author;
+            });
         },
     }
 };

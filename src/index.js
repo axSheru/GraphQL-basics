@@ -49,6 +49,26 @@ const posts = [
     },
 ];
 
+// Demo comments data.
+const comments = [
+    {
+        id: '1',
+        text: 'Cal Kestis rules!',
+    },
+    {
+        id: '2',
+        text: 'Feel the force.',
+    },
+    {
+        id: '3',
+        text: 'Jedis are weak.',
+    },
+    {
+        id: '4',
+        text: 'Are there software developers in space?',
+    },
+];
+
 // Type definition (Schema).
 // The ! is to indicate it will allways be the return type value.
 const typeDefs = `
@@ -59,6 +79,7 @@ const typeDefs = `
         grades: [Int!]!
         users(query: String): [User!]!
         posts(query: String): [Post!]!
+        comments: [Comment!]!
         me: User!
         post: Post!
     },
@@ -77,6 +98,11 @@ const typeDefs = `
         body: String!
         published: Boolean!
         author: User!
+    },
+
+    type Comment {
+        id: ID!
+        text: String!
     },
 `;
 
@@ -115,6 +141,9 @@ const resolvers = {
                 : posts.filter( ( post ) => {
                     return ( post.title.toLowerCase().includes( args.query.toLowerCase() )  || post.body.toLowerCase().includes( args.query.toLowerCase() ) );
                 });
+        },
+        comments( parent, args, ctx, info ) {
+            return comments;
         },
         me() {
             return {

@@ -55,21 +55,25 @@ const comments = [
         id: '1',
         text: 'Cal Kestis rules!',
         author: '1',
+        post: '3',
     },
     {
         id: '2',
         text: 'Feel the force.',
         author: '3',
+        post: '2',
     },
     {
         id: '3',
         text: 'Jedis are weak.',
         author: '3',
+        post: '1',
     },
     {
         id: '4',
         text: 'Are there software developers in space?',
         author: '2',
+        post: '2',
     },
 ];
 
@@ -109,6 +113,7 @@ const typeDefs = `
         id: ID!
         text: String!
         author: User!
+        post: Post!
     },
 `;
 
@@ -191,6 +196,11 @@ const resolvers = {
         author( parent, args, ctx, info ) {
             return users.find( ( user ) => {
                 return user.id == parent.author;
+            });
+        },
+        post( parent, args, ctx, info ) {
+            return posts.find( ( post ) => {
+                return post.id == parent.post;
             });
         },
     },

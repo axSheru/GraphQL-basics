@@ -46,7 +46,7 @@ let posts = [
         title: 'BS vs TVC',
         body: 'They both are amazing!',
         published: true,
-        author: '2',
+        author: '1',
     },
 ];
 
@@ -262,6 +262,16 @@ const resolvers = {
             }
 
             const deletedUser = users.splice( userIndex, 1 );
+
+            posts = posts.filter( ( post ) =>{
+                const match = post.author === args.id;
+
+                if( match ) {
+                    comments = comments.filter( ( comment ) => comment.post !== post.id );
+                }
+
+                return !match;
+            });
 
             return deletedUser[0];
         }

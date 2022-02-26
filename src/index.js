@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 // Scalar types: String, Boolean, Int, Float, ID.
 
 // Demo user data.
-const users = [
+let users = [
     {
         id: '1',
         name: 'Alex',
@@ -26,7 +26,7 @@ const users = [
 ];
 
 // Demo posts data.
-const posts = [
+let posts = [
     {
         id: '1',
         title: 'Star Wars is back!',
@@ -51,7 +51,7 @@ const posts = [
 ];
 
 // Demo comments data.
-const comments = [
+let comments = [
     {
         id: '1',
         text: 'Cal Kestis rules!',
@@ -97,6 +97,8 @@ const typeDefs = `
         createUser( data: CreateUserInput! ) : User!
         createPost( data: CreatePostInput! ) : Post!
         createComment( data: CreateCommentInput! ) : Comment!
+
+        deleteUser( id: ID! ): User!
     },
 
     input CreateUserInput {
@@ -252,6 +254,17 @@ const resolvers = {
             return comment;
 
         },
+        deleteUser( parent, args, ctx, info ) {
+            const userIndex = users.findIndex( ( user ) => user.id === args.id );
+
+            if( userIndex === -1 ) {
+                throw new Error( 'User not found.' );
+            }
+
+            const deletedUser = users.splice( userIndex, 1 );
+
+            return deletedUser[0];
+        }
     },
     Post: {
         author( parent, args, ctx, info ) {

@@ -100,6 +100,7 @@ const typeDefs = `
 
         deleteUser( id: ID! ): User!
         deletePost( id: ID! ): Post!
+        deleteComment( id: ID! ): Comment!
     },
 
     input CreateUserInput {
@@ -288,6 +289,16 @@ const resolvers = {
             comments = comments.filter( ( comment ) => comment.post !== args.id );
 
             return deletedPost[0];
+        },
+        deleteComment( parent, args, ctx, info ) {
+            const commentIndex = comments.findIndex( ( comment ) => comment.id === args.id );
+
+            if( commentIndex === -1 ) {
+                throw new Error( 'Comment not found.' );
+            }
+
+            return comments.splice( commentIndex, 1 )[0];
+
         },
     },
     Post: {

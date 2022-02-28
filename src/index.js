@@ -78,77 +78,6 @@ let comments = [
     },
 ];
 
-// Type definition (Schema).
-// The ! is to indicate it will allways be the return type value.
-const typeDefs = `
-    type Query {
-        greeting(name: String, position: String): String!
-        add( a: Float!, b: Float! ): Float!
-        add2( numbers: [Float!]! ): Float!
-        grades: [Int!]!
-        users(query: String): [User!]!
-        posts(query: String): [Post!]!
-        comments: [Comment!]!
-        me: User!
-        post: Post!
-    },
-
-    type Mutation {
-        createUser( data: CreateUserInput! ) : User!
-        createPost( data: CreatePostInput! ) : Post!
-        createComment( data: CreateCommentInput! ) : Comment!
-
-        deleteUser( id: ID! ): User!
-        deletePost( id: ID! ): Post!
-        deleteComment( id: ID! ): Comment!
-    },
-
-    input CreateUserInput {
-        name: String!
-        email: String!
-        age: Int
-    },
-
-    input CreatePostInput {
-        title: String!
-        body: String!
-        published: Boolean!
-        author: ID!
-    },
-
-    input CreateCommentInput {
-        text: String!
-        author: ID!
-        post: ID!
-    },
-
-    type User {
-        id: ID!
-        name: String!
-        email: String!
-        age: Int
-        posts: [Post!]!
-        comments: [Comment!]!
-    },
-
-    type Post {
-        id: ID!
-        title: String!
-        body: String!
-        published: Boolean!
-        author: User!
-        comments: [Comment!]!
-    },
-
-    type Comment {
-        id: ID!
-        text: String!
-        author: User!
-        post: Post!
-    },
-`;
-
-
 // Resolvers. The querys.
 const resolvers = {
     Query: {
@@ -342,7 +271,7 @@ const resolvers = {
 
 // Creates the server.
 const server = new GraphQLServer({
-    typeDefs,
+    typeDefs: './src/schema.graphql',
     resolvers
 });
 

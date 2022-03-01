@@ -135,6 +135,21 @@ const Mutation = {
         return comment;
 
     },
+    updateComment( parent, args, { db }, info ) {
+        const { id, data } = args;
+
+        const comment = db.comments.find( ( comment ) => comment.id === id );
+
+        if ( !comment ) {
+            throw new Error( 'Comment not found.' );
+        }
+
+        if ( typeof data.text === 'string' ) {
+            comment.text = data.text;
+        }
+
+        return comment;
+    },
     deleteComment( parent, args, ctx, info ) {
         const commentIndex = db.comments.findIndex( ( comment ) => comment.id === args.id );
 
